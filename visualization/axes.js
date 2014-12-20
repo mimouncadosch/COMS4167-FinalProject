@@ -48,12 +48,11 @@ function buildArrows () {
 }
 
 function drawLine(src, dst, colorHex) {
-	var geom = new THREE.Geometry(); 
-	var mat = new THREE.LineBasicMaterial({ linewidth: 3, color: colorHex });
-	geom.vertices.push( src.clone() );
-	geom.vertices.push( dst.clone() );
-	geom.computeLineDistances();
+	var geometry = new THREE.Geometry(); 
+	var material = new THREE.LineBasicMaterial({ linewidth: 3, color: colorHex });
+	geometry.vertices.push( src.clone() );
+	geometry.vertices.push( dst.clone() );
 
-	var axis = new THREE.Line( geom, mat, THREE.LinePieces);
-	return axis;
+	var line = new THREE.Line( geometry, material);
+	return line;
 }

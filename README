@@ -1,1 +1,21 @@
 http://stackoverflow.com/questions/11495089/how-to-get-the-absolute-position-of-a-vertex-in-three-js
+
+
+*Goals*: 
+-> Draw the thrust lines
+	At each rotor
+	What do I have:
+		The coordinates of the arms of the quad
+
+
+-> I need the normal to the quad plane
+	At each iteration, I have 3 quad points
+	So, I can get the normal to the quad plane. And I do
+
+	Now, draw a line 
+	At every frame rendering, update (x, y, z) or rotation and scale, so that line is parallel to normal
+
+	So, for line:
+	(x,y,z) can originate at center of quad
+
+PID controls

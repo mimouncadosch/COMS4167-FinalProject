@@ -1,5 +1,30 @@
-function Sphere (radius, vector) {
+function Line(src, dst, colorHex) {
+	var geometry = new THREE.Geometry(); 
+	var material = new THREE.LineBasicMaterial({ linewidth: 3, color: colorHex });
+	geometry.vertices.push( src.clone() );
+	geometry.vertices.push( dst.clone() );
 
+	var line = new THREE.Line( geometry, material);
+
+	this.updateLine = function (src, dst) {
+		geometry.vertices[0] = src;
+		geometry.vertices[1] = dst;
+		geometry.verticesNeedUpdate = true;
+	}
+	this.line = line;
+	return this;
+}
+
+// Creates array of lines
+function createLines (num) {
+	var lineArr = [];
+	for (var i = 0; i < num; i++) {
+		lineArr.push(new Line(new THREE.Vector3( 0, 0, 0 ), new THREE.Vector3( 0, 0, 1 ), 0x0000ff));
+	}
+	return lineArr;
+}
+
+function Sphere (radius, vector) {
 	var geometry = new THREE.SphereGeometry( radius, 32, 32 );
 	var material = new THREE.MeshBasicMaterial( { color: 0xfa8000 , wireframe: false} );
 	this.sphere = new THREE.Mesh( geometry, material );
@@ -78,5 +103,4 @@ function Tube () {
 	var tube = new THREE.Mesh( geometry, material );
 
 	return tube;
-	// scene.add( tube );
 }
