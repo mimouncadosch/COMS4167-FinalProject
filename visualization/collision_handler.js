@@ -6,10 +6,10 @@ function detectParticleHalfplane (sphere, plane) {
 		// console.log('in thresh');
 		var n = plane.getNormal();
 		var relativeVel = v.dot(n);
-		// console.log(relativeVel);
-		// if (relativeVel < 0) {
+		console.log(relativeVel);
+		if (relativeVel < 0) {
 			return true;
-		// }
+		}
 	}
 	return false;
 }
