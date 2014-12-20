@@ -3,7 +3,7 @@ This file contains the functions you need to construct axes in
 three dimensions
  */
 
-function buildAxes (length) {
+function buildAxes (length, origin) {
 	var axes = new THREE.Object3D();
 	var origin = new THREE.Vector3( 0, 0, 0 );
 	axes.add( buildAxis( origin, new THREE.Vector3( length, 0, 0 ), 0xFF0000, false ) ); 	// +X
@@ -34,7 +34,7 @@ function buildAxis( src, dst, colorHex, dashed ) {
 	return axis;
 }
 
-function buildArrows () {
+function buildArrows (origin) {
 	var arrowHelperArr = [];
 	var x_dir = new THREE.Vector3( 1, 0, 0 );
 	var y_dir = new THREE.Vector3( 0, 1, 0 );

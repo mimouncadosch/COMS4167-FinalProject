@@ -46,7 +46,6 @@ function Quadcopter (armLength) {
 	// Returns the vertices of quadcopter where the thrust vectors will be drawn
 	// Corresponds to the position of the rotors
 	this.getVertices = function (argument) {
-		console.log(p0);
 		var vertices = [p0, p1, p2, p3, p4, p5, p6, p7, p8];
 		return vertices;
 	}

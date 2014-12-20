@@ -40,6 +40,7 @@ p {
 
 body {
 	font-family: "Computer Modern", serif;
+	text-align: justify;
 }
 .container p, ul{
 	font-family: "Computer Modern", serif;	
