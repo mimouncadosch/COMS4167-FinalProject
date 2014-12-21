@@ -116,3 +116,12 @@ function verifyFormat (matrix) {
 		matrix = makeIntoArray(matrix);
 	}
 }
+
+function deg2rad (deg) {
+	var rad = [];
+	for (var i = 0; i < deg.length; i++) {
+		rad[i] = (Math.PI / 180) * deg[i];
+	}
+	
+	return rad;
+}

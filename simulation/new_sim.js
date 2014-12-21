@@ -25,7 +25,7 @@
 // Global vars
 var thrusts;
 
-function newSimulate (x, xdot, theta, thetadot, omegas) {
+function newSimulate (x, xdot, theta, thetadot, omegas, auto) {
 	var g = 9.81;
 	var m = 0.5;	// Mass of the vehicle
 	var L = 0.25; 	// Distance from center of quad to any of the propellers
@@ -33,13 +33,30 @@ function newSimulate (x, xdot, theta, thetadot, omegas) {
 	var b = 1e-7;	// Constant	
 	var I = numeric.diag([5e-3, 5e-3, 10e-3]);
 	var k_d = 0.25;
-	
-
-	// Compute i = omega^2 {4 x 1 matrix}
-	var twos = zeros(4,1);
-	setMatrix(twos, 2);
-	var i = numeric.pow(omegas, twos);							// Square of angular speeds of the motor
+	var i;
 		
+	// PD Controller
+	var KD = 0.5;
+	var KP = 0.01;
+	var KI = 0.1;
+
+	if (auto == true) {		
+		var deviation = 0.01;
+		var r = undoArray(rand(3,1));
+		r = numeric.mul(2 * deviation, r);
+		var thetadot = numeric.sub(r, deviation);
+		thetadot = deg2rad(thetadot); 							// Convert to radians
+
+		var state = {"I": I, "k": k, "L": L, "b": b, "m": m, "g": g };
+		i = pd_controller(state, thetadot, KD, KP);
+	}
+	else {
+		// Compute i = omega^2 {4 x 1 matrix}
+		var twos = zeros(4,1);
+		setMatrix(twos, 2);
+		i = numeric.pow(omegas, twos);							// Square of angular speeds of the motor
+	}
+	
 	// Compute forces, torques and accelerations
 	var omega = thetadot2omega(thetadot, theta); 				// Angular velocity vector
 	var a = acceleration(i, theta, xdot, m, g, k, k_d);

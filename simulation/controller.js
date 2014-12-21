@@ -26,24 +26,36 @@ function controller (type, Kd, Kp, Ki) {
 /**
  * PD controler
  */
-function pd_controller (state, thetadot, Kd, Kp) {
+function pd_controller (state, thetadot, KD, KP) {
 	// Initialize integral to zero, nonexistent
-	if (state.integral == 0) {
+	if (typeof(state.integral) === 'undefined') {
 		state.integral = zeros(3,1);
 	}
 
 	// Compute total thrust
-	var total = state.m * state.g / state.k / (cos(state.integral[0]) * cos(state.integral[1]));
+	var total = state.m * state.g / state.k / (cos(state.integral[0][0]) * cos(state.integral[1][0]));
 
 	// Compute PD error and inputs
-	var err = Kd * thetadot + Kp * state.integral;
+	var thetadot_kd = numeric.mul(KD, thetadot);
+	// thetadot_kd = undoArray(thetadot_kd);
+
+	var integral = undoArray(state.integral);
+	var KP_vector = zeros(3,1);
+	setMatrix(KP_vector, KP); 
+	KP_vector = undoArray(KP_vector);
+	var integral_KP = numeric.mul(KP, integral);
+
+	var err = numeric.add(thetadot_kd, integral_KP);
+	// var err = KD * thetadot + KP * state.integral;
 	var input = err2inputs(state, err, total);
 
+	return input;
 	// Update the controller state
 	// TBD - Vector additions and multiplications
-	var dt_thetadot = numeric.mul(state.dt, thetadot);
-	state.integral = numeric.sum(state.integral, dt_thetadot);
-	return res = {input : input, state : state };
+	// var dt_thetadot = numeric.mul(state.dt, thetadot);
+	// state.integral = numeric.sum(state.integral, dt_thetadot);
+	// return res = {input : input, state : state };
+	
 }
 
 

@@ -1,7 +1,3 @@
-// omegas[0][0] -= 0.00001;	// √ D
-// omegas[1][0] -= 0.00001;	// √ A
-// omegas[2][0] -= 0.00001;	// √ B
-// omegas[3][0] -= 0.00001;	// √ C
 function Control (omegas) {
 	document.addEventListener('keydown', function(event) {
 		if (event.keyCode == 38) {

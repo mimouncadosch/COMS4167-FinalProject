@@ -5,6 +5,7 @@ var camera, scene, renderer, origin, quad, view_controls, control;
 var state, vertices, lines, g;
 var n, n_s, n_s1, n_s2, n_s3, n_s4;
 var dir;
+var autopilot;
 
 $(window).load(function(){
     $('#myModal').modal('show');
@@ -16,6 +17,8 @@ $(window).load(function(){
 });
 
 function init () {
+
+	autopilot = false;
 	// Scene Settings
 	camera = new Camera(100);
 	scene = new THREE.Scene();
@@ -49,7 +52,7 @@ function init () {
 	theta = zeros(3,1);							// Pitch, roll, yaw
 	thetadot = zeros(3,1);						// Angular velocities (pitch, roll, yaw)
 	omegas = zeros(4, 1);						// Angular velocities of left, right, front and rear rotors, respectively
-	setMatrix(omegas, 0);
+	setMatrix(omegas, 640);
 
 	// Simple Gravity
 	g = 9.8;
@@ -66,8 +69,7 @@ function init () {
 
 // Render function
 var render = function () {
-		
-	state = newSimulate(x, xdot, theta, thetadot, omegas);
+	state = newSimulate(x, xdot, theta, thetadot, omegas, autopilot);
 
 	quad.quad.position.x = state.x[0][0];
 	quad.quad.position.y = state.x[1][0];
@@ -86,10 +88,8 @@ var render = function () {
 	n_s2 = n.clone();
 	n_s3 = n.clone();
 	n_s4 = n.clone();
-	// n_s5 = n.clone();
 	
 	// console.log(state.thrusts);	
-	// n_s.multiplyScalar((state.thrusts[0] - 1.2288000000000000) * 10e6);
 	n_s.multiplyScalar((state.thrusts[0] - 1.2288000000000000) * 10e5 * dir);
 	n_s1.multiplyScalar((state.thrusts[1] - 1.2288000000000000) * 10e5 * dir);
 	n_s2.multiplyScalar((state.thrusts[2] - 1.2288000000000000) * 10e5 * dir);
@@ -97,12 +97,8 @@ var render = function () {
 
 	
 	// var omegadot_magnitude = numeric(state.omegadot;
-	// console.log(omegadot_magnitude);
-	// console.log(state.omegadot);
 	// n_s4.multiplyScalar((state.omegadot.length()));
 	// console.log(n_s4);
-	// Adjust thrust magnitudes for visualization
-	// var adj_thrst = (state.thrusts[0] - 1.2288000000000000) * 10e6;
 	
 	var src = vertices[5].clone();			// √ D
 	var dst = vertices[5].clone().add(n_s);
