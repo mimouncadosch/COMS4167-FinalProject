@@ -1,12 +1,12 @@
 "use strict";
 
 var x, xdot, theta, thetadot, omegas;
-var camera, scene, renderer, origin, quad, view_controls, control;
+var camera, scene, renderer, origin, quad, view_controls, control, stats;
 var state, vertices, lines, g;
 var n, n_s, n_s1, n_s2, n_s3, n_s4;
 var dir;
 var autopilot;
-
+var skyboxMesh;
 $(window).load(function(){
     $('#myModal').modal('show');
     $('#launch-btn-easy').click(function() {
@@ -64,6 +64,24 @@ function init () {
 		scene.add(lines[i].line);
 	}
 	control = new Control(omegas);
+
+	var urlPrefix	= "images/";
+	var urls = [ urlPrefix + "posx.jpg"];
+	// var urls = [ urlPrefix + "posx.jpg", urlPrefix + "negx.jpg",
+	// 			urlPrefix + "posy.jpg", urlPrefix + "negy.jpg",
+	// 			urlPrefix + "posz.jpg", urlPrefix + "negz.jpg" ];
+	var textureCube	= THREE.ImageUtils.loadTextureCube( urls );
+	var shader	= THREE.ShaderLib["cube"];
+	shader.uniforms["tCube"].texture = textureCube;
+	var material = new THREE.ShaderMaterial({
+		fragmentShader	: shader.fragmentShader,
+		vertexShader	: shader.vertexShader,
+		uniforms	: shader.uniforms
+	});
+	skyboxMesh	= new THREE.Mesh( new THREE.CubeGeometry( 100000, 100000, 100000, 1, 1, 1, null, true ), material );
+	console.log(skyboxMesh);
+	scene.add( skyboxMesh );
+	
 	
 }
 
@@ -96,7 +114,6 @@ var render = function () {
 	n_s3.multiplyScalar((state.thrusts[3] - 1.2288000000000000) * 10e5 * dir);
 
 	
-	// var omegadot_magnitude = numeric(state.omegadot;
 	// n_s4.multiplyScalar((state.omegadot.length()));
 	// console.log(n_s4);
 	
@@ -127,6 +144,7 @@ var render = function () {
 	x = state.x;
 	theta = state.theta;
 	
+	console.log(state.theta[0][0], state.theta[1][0], state.theta[2][0]);
 	requestAnimationFrame( render );
 	view_controls.update();
 	renderer.render(scene, camera);

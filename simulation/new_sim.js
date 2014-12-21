@@ -41,7 +41,7 @@ function newSimulate (x, xdot, theta, thetadot, omegas, auto) {
 	var KI = 0.1;
 
 	if (auto == true) {		
-		var deviation = 0.01;
+		var deviation = 0.1;
 		var r = undoArray(rand(3,1));
 		r = numeric.mul(2 * deviation, r);
 		var thetadot = numeric.sub(r, deviation);

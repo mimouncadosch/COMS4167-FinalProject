@@ -59,19 +59,19 @@ function Quadcopter (armLength) {
 	// Pitch angle theta corresponds to rotation 
 	// along the y axis
 	this.pitch = function (theta) {
-		mesh.rotation.y += theta;
+		mesh.rotation.y = theta;
 	}
 
 	// Roll angle phi corresponds to rotation
 	// along the x axis
 	this.roll = function (phi) {
-		mesh.rotation.x += phi;
+		mesh.rotation.x = phi;
 	}
 
 	// Yaw angle psi corresponds to rotation
 	// along the z axis
 	this.yaw = function (psi) {
-		mesh.rotation.z += psi;
+		mesh.rotation.z = psi;
 	}
 
 	// Returns the thrust lines at each rotor
